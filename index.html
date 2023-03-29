@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="index.css" />
+		<title>Document</title>
+	</head>
+	<body>
+		<div class="weather__container">
+			<div class="weather__details">
+				<div class="weather__details-right">
+					<div class="current__block">
+						<div class="current__t">
+							<span id="current__temperature"></span>
+							<span class="units">o</span>
+						</div>
+						<div class="current__info"><span id="current__info"></span></div>
+						<img id="current__img" src="" alt="weather__icon" />
+					</div>
+				</div>
+				<div class="weather__details-left">
+					<div class="current">Давление: <span id="current__pressure"></span> мм.рт.ст</div>
+					<div class="current">Влажность: <span id="current__humidity"></span> %</div>
+					<div class="current">
+						<span class="text">Ощущается как:</span>
+						<span id="current__feels__like"></span>
+						<span class="text__units">o</span>
+					</div>
+					<div class="current">Ветер: <span id="current__wind"></span> м/с</div>
+					<div class="current">Направление: <span id="current__direction">CCЗ</span></div>
+				</div>
+			</div>
+			<div class="weather__hourly"></div>
+			<div class="weather__daily"></div>
+			<a class="more" href="#">Подробнее...</a>
+			<p id="cordLA"></p>
+		</div>
+		<script src="./index.js"></script>
+	</body>
+</html>
