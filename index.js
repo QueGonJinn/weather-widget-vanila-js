@@ -14,6 +14,7 @@ const currentFeelsLike = document.getElementById('current__feels__like');
 const currentWind = document.getElementById('current__wind');
 const currentDirection = document.getElementById('current__direction');
 const currentIcon = document.getElementById('current__img');
+const cityWrapper = document.querySelector('.weather__city');
 
 const directionOfWind = (degree) => {
 	if (degree > 337.5) {
@@ -102,7 +103,7 @@ function success(pos) {
 	const getWeatherDate = async (latitude = 53.89, longitude = 27.56) => {
 		try {
 			const response = await fetch(
-				`https://api.openweathermap.org/data/3.0/onecall?lat=${latitude}&lon=${longitude}&exclude=minutely&appid={youid}&units=metric&lang=ru`,
+				`https://api.openweathermap.org/data/3.0/onecall?lat=${latitude}&lon=${longitude}&exclude=minutely&appid=11329a68c70484de9078f50717a0d4b7&units=metric&lang=ru`,
 			).then((res) => res.json());
 
 			return response;
@@ -114,6 +115,16 @@ function success(pos) {
 	const app = async () => {
 		const weather = await getWeatherDate(crd.latitude, crd.longitude);
 
+		const city = await fetch(
+			`https://api.geoapify.com/v1/geocode/reverse?lat=${crd.latitude}&lon=${crd.longitude}&lang=ru&apiKey=5f52dceecbd046de9e150000ef5a2f4e`,
+		);
+
+		const cityData = await city.json();
+		console.log(cityData);
+
+		console.log(city);
+
+		cityWrapper.innerHTML = cityData.features[0].properties.city;
 		currentTemperature.innerHTML = Math.round(weather.current.temp * 10) / 10;
 		currentInfo.innerHTML = weather.current.weather[0].description;
 		currentPressure.innerHTML = weather.current.pressure;
@@ -128,31 +139,31 @@ function success(pos) {
 		);
 
 		weather.hourly.forEach((e, i) => {
-			if (i % 2 === 0 && i < 23) {
+			if (i % 2 === 0 && i < 10) {
 				new HourlyCard(e, '.weather__hourly').render();
 			}
 		});
 
-		weather.daily.forEach((e) => {
-			new DayilyCard(e, '.weather__daily').render();
+		weather.daily.forEach((e, i) => {
+			if (i < 5) {
+				new DayilyCard(e, '.weather__daily').render();
+			}
 		});
 
 		console.log(weather);
 	};
 
 	app();
-
-	console.log('Your current position is:');
-	console.log(`Latitude : ${crd.latitude}`);
-	console.log(`Longitude: ${crd.longitude}`);
 }
 
 function error(err) {
+	const latitude = 53.89;
+	const longitude = 27.56;
 	console.warn(`ERROR(${err.code}): ${err.message}`);
 	const getWeatherDate = async (latitude = 53.89, longitude = 27.56) => {
 		try {
 			const response = await fetch(
-				`https://api.openweathermap.org/data/3.0/onecall?lat=${latitude}&lon=${longitude}&exclude=minutely&appid={youid}7&units=metric&lang=ru`,
+				`https://api.openweathermap.org/data/3.0/onecall?lat=${latitude}&lon=${longitude}&exclude=minutely&appid=11329a68c70484de9078f50717a0d4b7&units=metric&lang=ru`,
 			).then((res) => res.json());
 
 			return response;
@@ -164,6 +175,13 @@ function error(err) {
 	const app = async () => {
 		const weather = await getWeatherDate();
 
+		const city = await fetch(
+			`https://api.geoapify.com/v1/geocode/reverse?lat=${latitude}&lon=${longitude}&lang=ru&apiKey=5f52dceecbd046de9e150000ef5a2f4e`,
+		);
+
+		const cityData = await city.json();
+
+		cityWrapper.innerHTML = cityData.features[0].properties.city;
 		currentTemperature.innerHTML = Math.round(weather.current.temp * 10) / 10;
 		currentInfo.innerHTML = weather.current.weather[0].description;
 		currentPressure.innerHTML = weather.current.pressure;
@@ -178,13 +196,15 @@ function error(err) {
 		);
 
 		weather.hourly.forEach((e, i) => {
-			if (i % 2 === 0 && i < 23) {
+			if (i % 2 === 0 && i < 10) {
 				new HourlyCard(e, '.weather__hourly').render();
 			}
 		});
 
-		weather.daily.forEach((e) => {
-			new DayilyCard(e, '.weather__daily').render();
+		weather.daily.forEach((e, i) => {
+			if (i < 5) {
+				new DayilyCard(e, '.weather__daily').render();
+			}
 		});
 
 		console.log(weather);
