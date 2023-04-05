@@ -4,98 +4,100 @@ const options = {
 	maximumAge: 0,
 };
 
-const days = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС'];
+const days = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
+const daysM = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС'];
 
-const currentTemperature = document.getElementById('current__temperature');
-const currentInfo = document.getElementById('current__info');
-const currentPressure = document.getElementById('current__pressure');
-const currentHumidity = document.getElementById('current__humidity');
-const currentFeelsLike = document.getElementById('current__feels__like');
-const currentWind = document.getElementById('current__wind');
-const currentDirection = document.getElementById('current__direction');
-const currentIcon = document.getElementById('current__img');
-const cityWrapper = document.querySelector('.weather__city');
+const month = [
+	'Января',
+	'Февраля',
+	'Марта',
+	'Апреля',
+	'Мая',
+	'Июня',
+	'Июля',
+	'Августа',
+	'Сентября',
+	'Октября',
+	'Ноября',
+	'Декабря',
+];
 
 const directionOfWind = (degree) => {
 	if (degree > 337.5) {
-		return 'С';
+		return 'Северное';
 	}
 	if (degree > 295.5) {
-		return 'СЗ';
+		return 'Северо-западное';
 	}
 	if (degree > 247.5) {
-		return 'З';
+		return 'Западное';
 	}
 	if (degree > 202.5) {
-		return 'ЮЗ';
+		return 'Юго-западное';
 	}
 	if (degree > 157.5) {
-		return 'Ю';
+		return 'Южное';
 	}
 	if (degree > 122.5) {
-		return 'ЮВ';
+		return 'Юго-восточное';
 	}
 	if (degree > 67.5) {
-		return 'В';
+		return 'Восточное';
 	}
 	if (degree > 22.5) {
-		return 'СВ';
+		return 'Северо-восточное';
 	}
-	return 'северный';
+	return 'Северное';
 };
-
-class HourlyCard {
-	constructor(e, parrentSelector) {
-		this.hourly = e.dt;
-		this.temperature = e.temp;
-		this.parrent = document.querySelector(parrentSelector);
-	}
-
-	render() {
-		const elem = document.createElement('div');
-		elem.classList.add('weather__hourly-item');
-
-		elem.innerHTML = `				
-					<div class="hourly">${new Date(this.hourly * 1000).getHours()} ч</div>
-					<div class="hourly__temperature">
-						<span>${Math.round(this.temperature * 10) / 10}</span>
-						<span class="text_hourly">o</span>
-					</div>				
-		`;
-
-		this.parrent.append(elem);
-	}
-}
 
 class DayilyCard {
 	constructor(e, parrentSelector) {
-		this.dayli = e.dt;
-		this.tMin = e.feels_like.night;
-		this.tMax = e.feels_like.day;
-		this.src = e.weather[0].icon;
+		this.daily = e.dt;
+		this.dayTemp = e.temp.day;
+		this.nightTemp = e.temp.night;
+		this.dayInfo = e.weather[0].description;
+		this.icon = e.weather[0].icon;
+		this.humidity = e.humidity;
+		this.wind = e.wind_speed;
+		this.direction = e.wind_deg;
+		this.pressure = e.pressure;
+		this.clouds = e.clouds;
+		this.sunrise = e.sunrise;
+		this.sunset = e.sunset;
 		this.parrent = document.querySelector(parrentSelector);
 	}
 
 	render() {
 		const elem = document.createElement('div');
-		elem.classList.add('weather__daily-item');
+		elem.classList.add('weather__week__days');
 
 		elem.innerHTML = `
-					<div class="hourly">${days[new Date(this.dayli * 1000).getDay()]}</div>
-					<div class="hourly__temperature">
-							<span>${Math.round(this.tMin * 10) / 10}</span>
-							<span class="text_hourly">o</span>
-					</div>
-					<div class="hourly__temperature">
-							<span>${Math.round(this.tMax * 10) / 10}</span></span>
-							<span class="text_hourly">o</span>
-					</div>
-					<img src=https://openweathermap.org/img/wn/${this.src}@2x.png alt="daily_icon" />					
+				<div class="day__wrapper">
+						<span class="day__name">${daysM[new Date(this.daily * 1000).getDay()]}</span>
+						<div class="currentday__temperature-wrapper">
+							<span class="day__temp">${Math.round(this.dayTemp * 10) / 10}</span>
+							<span class="day__separator">o</span>
+							<span class="day__units">C</span>
+						</div>
+						<div class="day__img">
+							<img src=https://openweathermap.org/img/wn/${this.icon}@2x.png alt="day__icon" />
+						</div>
+				</div>
 		`;
-
 		this.parrent.append(elem);
 	}
 }
+
+const currentDateDay = document.querySelector('.current__day');
+const currentCity = document.querySelector('.current__location');
+const currentTemp = document.querySelector('.current__temp');
+const currentIcon = document.querySelector('.current__img img');
+const currentDayInfo = document.getElementById('current__date_param');
+const currentPressure = document.getElementById('current__pressure_param');
+const currentHumidity = document.getElementById('current__humidity_param');
+const currentWind = document.getElementById('current__wind_param');
+const currentDirection = document.getElementById('current__wind_degree_param');
+const currentFeelsLike = document.querySelector('.current__feels__like');
 
 function success(pos) {
 	const crd = pos.coords;
@@ -120,36 +122,29 @@ function success(pos) {
 		);
 
 		const cityData = await city.json();
-		console.log(cityData);
 
-		console.log(city);
-
-		cityWrapper.innerHTML = cityData.features[0].properties.city;
-		currentTemperature.innerHTML = Math.round(weather.current.temp * 10) / 10;
-		currentInfo.innerHTML = weather.current.weather[0].description;
-		currentPressure.innerHTML = weather.current.pressure;
-		currentHumidity.innerHTML = weather.current.humidity;
-		currentFeelsLike.innerHTML = Math.round(weather.current.feels_like * 10) / 10;
-		currentWind.innerHTML = weather.current.wind_speed;
-		currentDirection.innerHTML = directionOfWind(weather.current.wind_deg);
-
+		currentCity.innerHTML = cityData.features[0].properties.city;
+		currentDateDay.innerHTML = `${days[new Date(weather.current.dt * 1000).getDay() - 1]}`;
+		currentTemp.innerHTML = Math.round(weather.current.temp * 10) / 10;
 		currentIcon.setAttribute(
 			'src',
 			`https://openweathermap.org/img/wn/${weather.current.weather[0].icon}@2x.png`,
 		);
+		currentDayInfo.innerHTML = weather.current.weather[0].description;
 
-		weather.hourly.forEach((e, i) => {
-			if (i % 2 === 0 && i < 10) {
-				new HourlyCard(e, '.weather__hourly').render();
-			}
-		});
+		currentPressure.innerHTML = `${weather.current.pressure} мм.рт.ст`;
+		currentHumidity.innerHTML = `${weather.current.humidity} %`;
+		currentWind.innerHTML = `${weather.current.wind_speed} м/с`;
+		currentDirection.innerHTML = directionOfWind(weather.current.wind_deg);
+		currentFeelsLike.innerHTML = Math.round(weather.current.feels_like * 10) / 10;
 
 		weather.daily.forEach((e, i) => {
-			if (i < 5) {
-				new DayilyCard(e, '.weather__daily').render();
+			if (i < 6) {
+				new DayilyCard(e, '.weather__week').render();
 			}
 		});
 
+		console.log(cityData);
 		console.log(weather);
 	};
 
@@ -160,6 +155,7 @@ function error(err) {
 	const latitude = 53.89;
 	const longitude = 27.56;
 	console.warn(`ERROR(${err.code}): ${err.message}`);
+
 	const getWeatherDate = async (latitude = 53.89, longitude = 27.56) => {
 		try {
 			const response = await fetch(
@@ -181,32 +177,27 @@ function error(err) {
 
 		const cityData = await city.json();
 
-		cityWrapper.innerHTML = cityData.features[0].properties.city;
-		currentTemperature.innerHTML = Math.round(weather.current.temp * 10) / 10;
-		currentInfo.innerHTML = weather.current.weather[0].description;
-		currentPressure.innerHTML = weather.current.pressure;
-		currentHumidity.innerHTML = weather.current.humidity;
-		currentFeelsLike.innerHTML = Math.round(weather.current.feels_like * 10) / 10;
-		currentWind.innerHTML = weather.current.wind_speed;
-		currentDirection.innerHTML = directionOfWind(weather.current.wind_deg);
-
+		currentCity.innerHTML = cityData.features[0].properties.city;
+		currentDateDay.innerHTML = `${days[new Date(weather.current.dt * 1000).getDay() - 1]}`;
+		currentTemp.innerHTML = Math.round(weather.current.temp * 10) / 10;
 		currentIcon.setAttribute(
 			'src',
 			`https://openweathermap.org/img/wn/${weather.current.weather[0].icon}@2x.png`,
 		);
-
-		weather.hourly.forEach((e, i) => {
-			if (i % 2 === 0 && i < 10) {
-				new HourlyCard(e, '.weather__hourly').render();
-			}
-		});
+		currentDayInfo.innerHTML = weather.current.weather[0].description;
+		currentPressure.innerHTML = `${weather.current.pressure} мм.рт.ст`;
+		currentHumidity.innerHTML = `${weather.current.humidity} %`;
+		currentWind.innerHTML = `${weather.current.wind_speed} м/с`;
+		currentDirection.innerHTML = directionOfWind(weather.current.wind_deg);
+		currentFeelsLike.innerHTML = Math.round(weather.current.feels_like * 10) / 10;
 
 		weather.daily.forEach((e, i) => {
-			if (i < 5) {
-				new DayilyCard(e, '.weather__daily').render();
+			if (i < 6) {
+				new DayilyCard(e, '.weather__week').render();
 			}
 		});
 
+		console.log(cityData);
 		console.log(weather);
 	};
 
