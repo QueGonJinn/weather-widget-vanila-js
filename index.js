@@ -53,17 +53,11 @@ const directionOfWind = (degree) => {
 class DayilyCard {
 	constructor(e, parrentSelector) {
 		this.daily = e.dt;
-		this.dayTemp = e.temp.day;
-		this.nightTemp = e.temp.night;
-		this.dayInfo = e.weather[0].description;
+		this.dayTemp = e.temp.max;
+		this.nightTemp = e.temp.min;
+
 		this.icon = e.weather[0].icon;
-		this.humidity = e.humidity;
-		this.wind = e.wind_speed;
-		this.direction = e.wind_deg;
-		this.pressure = e.pressure;
-		this.clouds = e.clouds;
-		this.sunrise = e.sunrise;
-		this.sunset = e.sunset;
+
 		this.parrent = document.querySelector(parrentSelector);
 	}
 
@@ -72,18 +66,57 @@ class DayilyCard {
 		elem.classList.add('weather__week__days');
 
 		elem.innerHTML = `
-				<div class="day__wrapper">
-						<span class="day__name">${daysM[new Date(this.daily * 1000).getDay()]}</span>
-						<div class="currentday__temperature-wrapper">
-							<span class="day__temp">${Math.round(this.dayTemp * 10) / 10}</span>
-							<span class="day__separator">o</span>
-							<span class="day__units">C</span>
-						</div>
-						<div class="day__img">
-							<img src=https://openweathermap.org/img/wn/${this.icon}@2x.png alt="day__icon" />
-						</div>
-				</div>
-		`;
+                        <div class="day__wrapper">
+                                <span class="day__name">${
+																	daysM[new Date(this.daily * 1000).getDay()]
+																}</span>
+                                <div class="currentday__temperature-wrapper">
+                                    <span class="day__temp">${
+																			Math.round(this.dayTemp * 10) / 10
+																		}</span>
+                                    <span class="day__separator">o</span>                                    
+                                </div>
+                                <div class="currentday__temperature-wrapper">
+                                    <span class="day__temp">${
+																			Math.round(this.nightTemp * 10) / 10
+																		}</span>
+                                    <span class="day__separator">o</span>                                    
+                                </div>
+                                <div class="day__img">
+                                    <img src=https://openweathermap.org/img/wn/${
+																			this.icon
+																		}@2x.png alt="day__icon" />
+                                </div>
+                        </div>
+                `;
+		this.parrent.append(elem);
+	}
+}
+
+class HourlyCard {
+	constructor(e, parrentSelector) {
+		this.daily = e.dt;
+		this.dayTemp = e.temp;
+		this.parrent = document.querySelector(parrentSelector);
+	}
+
+	render() {
+		const elem = document.createElement('div');
+		elem.classList.add('hourly__items');
+
+		elem.innerHTML = `
+                        <div class="hourly__wrapper">
+                            <span class="hourly__name">${new Date(
+															this.daily * 1000,
+														).getHours()} ч</span>
+                                <div class="currentday__temperature-wrapper">
+                                    <span class="day__temp">${
+																			Math.round(this.dayTemp * 10) / 10
+																		}</span>
+                                    <span class="day__separator">o</span>                                    
+                                </div>
+                        </div>
+                `;
 		this.parrent.append(elem);
 	}
 }
@@ -98,6 +131,7 @@ const currentHumidity = document.getElementById('current__humidity_param');
 const currentWind = document.getElementById('current__wind_param');
 const currentDirection = document.getElementById('current__wind_degree_param');
 const currentFeelsLike = document.querySelector('.current__feels__like');
+const preload = document.querySelector('.preload');
 
 function success(pos) {
 	const crd = pos.coords;
@@ -124,7 +158,7 @@ function success(pos) {
 		const cityData = await city.json();
 
 		currentCity.innerHTML = cityData.features[0].properties.city;
-		currentDateDay.innerHTML = `${days[new Date(weather.current.dt * 1000).getDay() - 1]}`;
+		currentDateDay.innerHTML = ` ${days[new Date(weather.current.dt * 1000).getDay() - 1]}`;
 		currentTemp.innerHTML = Math.round(weather.current.temp * 10) / 10;
 		currentIcon.setAttribute(
 			'src',
@@ -132,15 +166,25 @@ function success(pos) {
 		);
 		currentDayInfo.innerHTML = weather.current.weather[0].description;
 
-		currentPressure.innerHTML = `${weather.current.pressure} мм.рт.ст`;
-		currentHumidity.innerHTML = `${weather.current.humidity} %`;
-		currentWind.innerHTML = `${weather.current.wind_speed} м/с`;
+		currentPressure.innerHTML = ` ${weather.current.pressure} мм.рт.ст`;
+		currentHumidity.innerHTML = ` ${weather.current.humidity} %`;
+		currentWind.innerHTML = ` ${weather.current.wind_speed} м/с`;
 		currentDirection.innerHTML = directionOfWind(weather.current.wind_deg);
 		currentFeelsLike.innerHTML = Math.round(weather.current.feels_like * 10) / 10;
+
+		if (currentIcon.getAttribute('src') !== 0) {
+			preload.setAttribute('style', 'visibility: hidden');
+		}
 
 		weather.daily.forEach((e, i) => {
 			if (i < 6) {
 				new DayilyCard(e, '.weather__week').render();
+			}
+		});
+
+		weather.hourly.forEach((e, i) => {
+			if (i < 15 && i !== 0 && i % 2 === 0) {
+				new HourlyCard(e, '.weather__hourly').render();
 			}
 		});
 
@@ -178,7 +222,7 @@ function error(err) {
 		const cityData = await city.json();
 
 		currentCity.innerHTML = cityData.features[0].properties.city;
-		currentDateDay.innerHTML = `${days[new Date(weather.current.dt * 1000).getDay() - 1]}`;
+		currentDateDay.innerHTML = `, ${days[new Date(weather.current.dt * 1000).getDay() - 1]}`;
 		currentTemp.innerHTML = Math.round(weather.current.temp * 10) / 10;
 		currentIcon.setAttribute(
 			'src',
@@ -191,12 +235,21 @@ function error(err) {
 		currentDirection.innerHTML = directionOfWind(weather.current.wind_deg);
 		currentFeelsLike.innerHTML = Math.round(weather.current.feels_like * 10) / 10;
 
+		if (currentIcon.getAttribute('src') !== 0) {
+			preload.setAttribute('style', 'visibility: hidden');
+		}
+
 		weather.daily.forEach((e, i) => {
 			if (i < 6) {
 				new DayilyCard(e, '.weather__week').render();
 			}
 		});
 
+		weather.hourly.forEach((e, i) => {
+			if (i < 15 && i !== 0 && i % 2 === 0) {
+				new HourlyCard(e, '.weather__hourly').render();
+			}
+		});
 		console.log(cityData);
 		console.log(weather);
 	};

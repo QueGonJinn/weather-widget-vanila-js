@@ -11,52 +11,105 @@
 		<div class="weather__container">
 			<div class="weather__location">
 				<div class="current__location">Слоним</div>
+				<div class="current__day">Понедельник</div>
 			</div>
 			<div class="weather__today">
 				<div class="today__current">
-					<div class="current__wrapper">
-						<div class="current__day">Понедельник</div>
-						<div class="current__temperature-wrapper">
-							<div class="curr_wrapper">
-								<span class="current__temp">22</span>
-								<span class="current__separator">o</span>
-								<span class="current__units">C</span>
+					<div class="today__current__wrapper">
+						<div class="current__wrapper">
+							<div class="current__temperature-wrapper">
+								<div class="curr_wrapper">
+									<span class="current__temp">22</span>
+									<span class="current__separator">o</span>
+									<span class="current__units">C</span>
+								</div>
+								<div id="current__date_param">Облачно</div>
 							</div>
 						</div>
-					</div>
-					<div class="current__img">
-						<img src="" alt="current__icon" />
-						<div id="current__date_param" class="">Облачно</div>
+						<div class="current__img">
+							<img src="" alt="current__icon" />
+						</div>
 					</div>
 				</div>
+				<div class="weather__hourly"></div>
 				<div class="today__additions">
 					<div class="additions__item">
-						<div id="current__pressure" class="additions__parametrs">Давление</div>
-						<div id="current__pressure_param" class="additions__meaning">1020 мм.рт.ст</div>
-					</div>
-					<div class="additions__item">
-						<div id="current__humidity" class="additions__parametrs">Влажность</div>
-						<div id="current__humidity_param" class="additions__meaning">70%</div>
-					</div>
-					<div class="additions__item">
-						<div id="current__feels__like" class="additions__parametrs">Ощущается как</div>
+						<div id="current__feels__like" class="additions__parametrs">Ощущается:</div>
 						<div id="current__month_day_param" class="additions__meaning">
 							<span class="current__feels__like">22</span>
 							<span class="current__separator__feels__like">o</span>
-							<span class="current__units__feels__like">C</span>
 						</div>
 					</div>
 					<div class="additions__item">
-						<div id="current__wind" class="additions__parametrs">Ветер</div>
+						<div id="current__wind" class="additions__parametrs">Ветер:</div>
 						<div id="current__wind_param" class="additions__meaning">5 м/с</div>
 					</div>
 					<div class="additions__item">
-						<div id="current__wind_degree" class="additions__parametrs">Направление</div>
+						<div id="current__wind_degree" class="additions__parametrs">Направление:</div>
 						<div id="current__wind_degree_param" class="additions__meaning">СЗ</div>
+					</div>
+					<div class="additions__item">
+						<div id="current__humidity" class="additions__parametrs">Влажность:</div>
+						<div id="current__humidity_param" class="additions__meaning">70%</div>
+					</div>
+					<div class="additions__item">
+						<div id="current__pressure" class="additions__parametrs">Давление:</div>
+						<div id="current__pressure_param" class="additions__meaning">1020 мм.рт.ст</div>
 					</div>
 				</div>
 			</div>
 			<div class="weather__week"></div>
+			<div class="preload">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					xmlns:xlink="http://www.w3.org/1999/xlink"
+					style="margin: auto; background: none; display: block; shape-rendering: auto"
+					width="200px"
+					height="200px"
+					viewBox="0 0 100 100"
+					preserveAspectRatio="xMidYMid"
+				>
+					<circle
+						cx="50"
+						cy="50"
+						r="32"
+						stroke-width="8"
+						stroke="#1d3f72"
+						stroke-dasharray="50.26548245743669 50.26548245743669"
+						fill="none"
+						stroke-linecap="round"
+					>
+						<animateTransform
+							attributeName="transform"
+							type="rotate"
+							dur="1s"
+							repeatCount="indefinite"
+							keyTimes="0;1"
+							values="0 50 50;360 50 50"
+						></animateTransform>
+					</circle>
+					<circle
+						cx="50"
+						cy="50"
+						r="23"
+						stroke-width="8"
+						stroke="#5699d2"
+						stroke-dasharray="36.12831551628262 36.12831551628262"
+						stroke-dashoffset="36.12831551628262"
+						fill="none"
+						stroke-linecap="round"
+					>
+						<animateTransform
+							attributeName="transform"
+							type="rotate"
+							dur="1s"
+							repeatCount="indefinite"
+							keyTimes="0;1"
+							values="0 50 50;-360 50 50"
+						></animateTransform>
+					</circle>
+				</svg>
+			</div>
 		</div>
 		<script src="./index.js"></script>
 	</body>

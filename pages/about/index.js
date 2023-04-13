@@ -4,7 +4,7 @@ const options = {
 	maximumAge: 0,
 };
 
-const days = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
+const days = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
 
 const month = [
 	'Января',
@@ -52,8 +52,8 @@ const directionOfWind = (degree) => {
 class DayilyCard {
 	constructor(e, parrentSelector) {
 		this.daily = e.dt;
-		this.dayTemp = e.temp.day;
-		this.nightTemp = e.temp.night;
+		this.dayTemp = e.temp.max;
+		this.nightTemp = e.temp.min;
 		this.dayInfo = e.weather[0].description;
 		this.icon = e.weather[0].icon;
 		this.humidity = e.humidity;
@@ -68,88 +68,81 @@ class DayilyCard {
 
 	render() {
 		const elem = document.createElement('div');
-		elem.classList.add('weather__week__days');
+		elem.classList.add('wrapper__day');
 
 		elem.innerHTML = `
-				<div class="day__wrapper">
-						<span class="day__name">${days[new Date(this.daily * 1000).getDay()]}</span>
-						<span class="day__number">${new Date(this.daily * 1000).getDate()}</span>
-						<span class="day__month">${month[new Date(this.daily * 1000).getMonth()]}</span>
-					</div>
-					<div class="day__temp__wrapper">
-						<div class="wrapper__day">
-							<div class="temp__daytime">
-								<div class="daytime_wrapper">
-									<div class="day__img">
-										<img src=https://openweathermap.org/img/wn/${this.icon}@2x.png alt="day__icon" />
-									</div>
-									<div class="currentday__temperature-wrapper">
-										<span class="day__temp">${Math.round(this.dayTemp * 10) / 10}</span>
-										<span class="day__separator">o</span>
-										<span class="day__units">C</span>
-									</div>
-									
-									<div class="day__inform__weather">${this.dayInfo}</div>
-								</div>
-								
-							</div>
-							<div class="day__additions">
-									<div class="additions__item">
-										<div id="daytime__humidity" class="item__param">Влажность</div>
-										<div id="daytime__humidity__param" class="item__meaning">${this.humidity} %</div>
-									</div>
-									<div class="additions__item">
-										<div id="daytime__wind" class="item__param">Ветер</div>
-										<div id="daytime__wind__param" class="item__meaning">${this.wind} м/с</div>
-									</div>
-									<div class="additions__item">
-										<div id="daytime__wind" class="item__param">Направление</div>
-										<div id="daytime__wind__param" class="item__meaning">${directionOfWind(this.direction)}</div>
-									</div>
-									<div class="additions__item">
-										<div id="daytime__wind" class="item__param">Давление</div>
-										<div id="daytime__wind__param" class="item__meaning">${this.pressure} мм.рт.ст</div>
-									</div>
-								</div>
-							
+			
+					<div class="temp__daytime">
+						<div class="day__wrapper">
+							<span class="day__name">${days[new Date(this.daily * 1000).getDay()]}</span>
+							<span class="day__number">${new Date(this.daily * 1000).getDate()}</span>
+							<span class="day__month">${month[new Date(this.daily * 1000).getMonth()]}</span>
 						</div>
-						<div class="more__additions">
-							<div class="more__item">
-								<div class="more__param">Облачность:</div>
-								<div class="more__meaning">${this.clouds} %</div>
+						<div class="daytime_wrapper">
+							<div class="current__temperature">
+								<div class="currentday__temperature-wrapper">
+									<span class="day__temp">${Math.floor(this.dayTemp * 10) / 10}</span>
+									<span class="day__separator">o</span>
+									<span class="day__units">C</span>
+								</div>
+								<div class="currentday__temperature-wrapper">
+									<span class="day__temp">${Math.floor(this.nightTemp * 10) / 10}</span>
+									<span class="day__separator">o</span>
+									<span class="day__units">C</span>
+								</div>
 							</div>
-							<div class="more__item">
-								<div class="more__param">Восход:</div>
-								<div class="more__meaning">${new Date(this.sunrise * 1000).getHours()}:${new Date(
-			this.sunrise * 1000,
-		).getMinutes()}</div>
+							<div class="day__img">
+								<img src=https://openweathermap.org/img/wn/${this.icon}@2x.png alt="day__icon" />
 							</div>
-							<div class="more__item">
-								<div class="more__param">Закат:</div>
-								<div class="more__meaning">${new Date(this.sunset * 1000).getHours()}:${
+						</div>
+						<div class="day__inform__weather">Пасмурно</div>
+					</div>
+					<div class="day__additions">
+						<div class="additions__item">
+							<div id="daytime__clouds" class="item__param">Облачнось:</div>
+							<div id="daytime__clouds__param" class="item__meaning">${this.clouds} %</div>
+						</div>
+						<div class="additions__item">
+							<div id="daytime__humidity" class="item__param">Влажность:</div>
+							<div id="daytime__humidity__param" class="item__meaning">${this.humidity} %</div>
+						</div>
+						<div class="additions__item">
+							<div id="daytime__wind" class="item__param">Ветер:</div>
+							<div id="daytime__wind__param" class="item__meaning">${this.wind} м/с</div>
+						</div>
+						<div class="additions__item">
+							<div id="daytime__wind__degree" class="item__param">Направление:</div>
+							<div id="daytime__wind__degree__param" class="item__meaning">${directionOfWind(
+								this.direction,
+							)}</div>
+						</div>
+						<div class="additions__item">
+							<div id="daytime__pressure" class="item__param">Давление:</div>
+							<div id="daytime__pressure__param" class="item__meaning">${this.pressure} мм.рт.ст</div>
+						</div>
+						<div class="additions__item">
+							<div id="daytime__sunrise" class="item__param">Восход:</div>
+							<div id="daytime__sunrise__param" class="item__meaning">${new Date(
+								this.sunrise * 1000,
+							).getHours()}:${new Date(this.sunrise * 1000).getMinutes()} </div>
+						</div>
+						<div class="additions__item">
+							<div id="daytime__sunset" class="item__param">Закат:</div>
+							<div id="daytime__sunset__param" class="item__meaning">${new Date(this.sunset * 1000).getHours()}:${
 			new Date(this.sunset * 1000).getMinutes() < 10
 				? `0${new Date(this.sunset * 1000).getMinutes()}`
 				: new Date(this.sunset * 1000).getMinutes()
 		}</div>
-							</div>
 						</div>
 					</div>
+				
 		`;
+
 		this.parrent.append(elem);
 	}
 }
 
-const currentDateDay = document.querySelector('.current__day');
 const currentCity = document.querySelector('.current__location');
-const currentTemp = document.querySelector('.current__temp');
-const currentIcon = document.querySelector('.current__img img');
-const currentDayInfo = document.getElementById('current__date_param');
-const currentPressure = document.getElementById('current__pressure_param');
-const currentHumidity = document.getElementById('current__humidity_param');
-const currentWind = document.getElementById('current__wind_param');
-const currentDirection = document.getElementById('current__wind_degree_param');
-const currentFeelsLike = document.querySelector('.current__feels__like');
-const currentClouds = document.getElementById('current__clouds_param');
 
 function success(pos) {
 	const crd = pos.coords;
@@ -176,22 +169,9 @@ function success(pos) {
 		const cityData = await city.json();
 
 		currentCity.innerHTML = cityData.features[0].properties.city;
-		currentDateDay.innerHTML = `${days[new Date(weather.current.dt * 1000).getDay() - 1]}`;
-		currentTemp.innerHTML = Math.round(weather.current.temp * 10) / 10;
-		currentIcon.setAttribute(
-			'src',
-			`https://openweathermap.org/img/wn/${weather.current.weather[0].icon}@2x.png`,
-		);
-		currentDayInfo.innerHTML = weather.current.weather[0].description;
-		currentClouds.innerHTML = `${weather.current.clouds} %`;
-		currentPressure.innerHTML = `${weather.current.pressure} мм.рт.ст`;
-		currentHumidity.innerHTML = `${weather.current.humidity} %`;
-		currentWind.innerHTML = `${weather.current.wind_speed} м/с`;
-		currentDirection.innerHTML = directionOfWind(weather.current.wind_deg);
-		currentFeelsLike.innerHTML = Math.round(weather.current.feels_like * 10) / 10;
 
 		weather.daily.forEach((e, i) => {
-			if (i < 6) {
+			if (i < 6 && i !== 0) {
 				new DayilyCard(e, '.weather__week').render();
 			}
 		});
@@ -230,22 +210,9 @@ function error(err) {
 		const cityData = await city.json();
 
 		currentCity.innerHTML = cityData.features[0].properties.city;
-		currentDateDay.innerHTML = `${days[new Date(weather.current.dt * 1000).getDay() - 1]}`;
-		currentTemp.innerHTML = Math.round(weather.current.temp * 10) / 10;
-		currentIcon.setAttribute(
-			'src',
-			`https://openweathermap.org/img/wn/${weather.current.weather[0].icon}@2x.png`,
-		);
-		currentDayInfo.innerHTML = weather.current.weather[0].description;
-		currentClouds.innerHTML = `${weather.current.clouds} %`;
-		currentPressure.innerHTML = `${weather.current.pressure} мм.рт.ст`;
-		currentHumidity.innerHTML = `${weather.current.humidity} %`;
-		currentWind.innerHTML = `${weather.current.wind_speed} м/с`;
-		currentDirection.innerHTML = directionOfWind(weather.current.wind_deg);
-		currentFeelsLike.innerHTML = Math.round(weather.current.feels_like * 10) / 10;
 
 		weather.daily.forEach((e, i) => {
-			if (i < 6) {
+			if (i < 6 && i !== 0) {
 				new DayilyCard(e, '.weather__week').render();
 			}
 		});
