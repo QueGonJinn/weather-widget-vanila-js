@@ -9,139 +9,141 @@
 	</head>
 	<body>
 		<main class="container">
-			<a href="#" class="weather__link">
-				<div class="weather__container">
-					<div class="weather__location">
-						<div class="location__container">
-							<div class="current__location">Слоним</div>
-							<div class="current__day">Понедельник</div>
-						</div>
-						<button id="check__location" class="check__location">
-							<svg
-								version="1.0"
-								id="Layer_1"
-								xmlns="http://www.w3.org/2000/svg"
-								xmlns:xlink="http://www.w3.org/1999/xlink"
-								width="24px"
-								height="24px"
-								viewBox="0 0 64 64"
-								enable-background="new 0 0 64 64"
-								xml:space="preserve"
-							>
-								<g>
-									<path
-										fill="#236969"
-										d="M32,0C18.745,0,8,10.745,8,24c0,5.678,2.502,10.671,5.271,15l17.097,24.156C30.743,63.686,31.352,64,32,64
+			<div class="weather__main__wrapper">
+				<button id="check__location" class="check__location">
+					<svg
+						version="1.0"
+						id="Layer_1"
+						xmlns="http://www.w3.org/2000/svg"
+						xmlns:xlink="http://www.w3.org/1999/xlink"
+						width="24px"
+						height="24px"
+						viewBox="0 0 64 64"
+						enable-background="new 0 0 64 64"
+						xml:space="preserve"
+					>
+						<g>
+							<path
+								fill="#236969"
+								d="M32,0C18.745,0,8,10.745,8,24c0,5.678,2.502,10.671,5.271,15l17.097,24.156C30.743,63.686,31.352,64,32,64
 		s1.257-0.314,1.632-0.844L50.729,39C53.375,35.438,56,29.678,56,24C56,10.745,45.255,0,32,0z M32,38c-7.732,0-14-6.268-14-14
 		s6.268-14,14-14s14,6.268,14,14S39.732,38,32,38z"
-									/>
-									<path
-										fill="#236969"
-										d="M32,12c-6.627,0-12,5.373-12,12s5.373,12,12,12s12-5.373,12-12S38.627,12,32,12z M32,34
+							/>
+							<path
+								fill="#236969"
+								d="M32,12c-6.627,0-12,5.373-12,12s5.373,12,12,12s12-5.373,12-12S38.627,12,32,12z M32,34
 		c-5.523,0-10-4.478-10-10s4.477-10,10-10s10,4.478,10,10S37.523,34,32,34z"
-									/>
-								</g>
-							</svg>
-						</button>
-					</div>
-					<div class="weather__today">
-						<div class="today__current">
-							<div class="today__current__wrapper">
-								<div class="current__wrapper">
-									<div class="current__temperature-wrapper">
-										<div class="curr_wrapper">
-											<span class="current__temp">22</span>
-											<span class="current__separator">o</span>
-											<span class="current__units">C</span>
+							/>
+						</g>
+					</svg>
+				</button>
+				<a href="#" class="weather__link">
+					<div class="weather__container">
+						<div class="weather__location">
+							<div class="location__container">
+								<div class="current__location">Слоним</div>
+								<div class="current__day">Понедельник</div>
+							</div>
+						</div>
+						<div class="weather__today">
+							<div class="today__current">
+								<div class="today__current__wrapper">
+									<div class="current__wrapper">
+										<div class="current__temperature-wrapper">
+											<div class="curr_wrapper">
+												<span class="current__temp">22</span>
+												<span class="current__separator">o</span>
+												<span class="current__units">C</span>
+											</div>
+											<div id="current__date_param">Облачно</div>
 										</div>
-										<div id="current__date_param">Облачно</div>
+									</div>
+									<div class="current__img">
+										<img src="" alt="current__icon" />
 									</div>
 								</div>
-								<div class="current__img">
-									<img src="" alt="current__icon" />
+							</div>
+							<div class="weather__hourly"></div>
+							<div class="today__additions">
+								<div class="additions__item">
+									<div id="current__feels__like" class="additions__parametrs">Ощущается как:</div>
+									<div id="current__month_day_param" class="additions__meaning">
+										<span class="current__feels__like">22</span>
+									</div>
+								</div>
+								<div class="additions__item">
+									<div id="current__wind" class="additions__parametrs">Ветер:</div>
+									<div id="current__wind_param" class="additions__meaning">5 м/с</div>
+								</div>
+								<div class="additions__item">
+									<div id="current__wind_degree" class="additions__parametrs">Направление:</div>
+									<div id="current__wind_degree_param" class="additions__meaning">СЗ</div>
+								</div>
+								<div class="additions__item">
+									<div id="current__humidity" class="additions__parametrs">Влажность:</div>
+									<div id="current__humidity_param" class="additions__meaning">70%</div>
+								</div>
+								<div class="additions__item">
+									<div id="current__pressure" class="additions__parametrs">Давление:</div>
+									<div id="current__pressure_param" class="additions__meaning">1020 мм.рт.ст</div>
 								</div>
 							</div>
 						</div>
-						<div class="weather__hourly"></div>
-						<div class="today__additions">
-							<div class="additions__item">
-								<div id="current__feels__like" class="additions__parametrs">Ощущается как:</div>
-								<div id="current__month_day_param" class="additions__meaning">
-									<span class="current__feels__like">22</span>
-								</div>
-							</div>
-							<div class="additions__item">
-								<div id="current__wind" class="additions__parametrs">Ветер:</div>
-								<div id="current__wind_param" class="additions__meaning">5 м/с</div>
-							</div>
-							<div class="additions__item">
-								<div id="current__wind_degree" class="additions__parametrs">Направление:</div>
-								<div id="current__wind_degree_param" class="additions__meaning">СЗ</div>
-							</div>
-							<div class="additions__item">
-								<div id="current__humidity" class="additions__parametrs">Влажность:</div>
-								<div id="current__humidity_param" class="additions__meaning">70%</div>
-							</div>
-							<div class="additions__item">
-								<div id="current__pressure" class="additions__parametrs">Давление:</div>
-								<div id="current__pressure_param" class="additions__meaning">1020 мм.рт.ст</div>
-							</div>
+						<div class="weather__week"></div>
+						<div class="preload">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								xmlns:xlink="http://www.w3.org/1999/xlink"
+								style="margin: auto; background: none; display: block; shape-rendering: auto"
+								width="200px"
+								height="200px"
+								viewBox="0 0 100 100"
+								preserveAspectRatio="xMidYMid"
+							>
+								<circle
+									cx="50"
+									cy="50"
+									r="32"
+									stroke-width="8"
+									stroke="#1d3f72"
+									stroke-dasharray="50.26548245743669 50.26548245743669"
+									fill="none"
+									stroke-linecap="round"
+								>
+									<animateTransform
+										attributeName="transform"
+										type="rotate"
+										dur="1s"
+										repeatCount="indefinite"
+										keyTimes="0;1"
+										values="0 50 50;360 50 50"
+									></animateTransform>
+								</circle>
+								<circle
+									cx="50"
+									cy="50"
+									r="23"
+									stroke-width="8"
+									stroke="#5699d2"
+									stroke-dasharray="36.12831551628262 36.12831551628262"
+									stroke-dashoffset="36.12831551628262"
+									fill="none"
+									stroke-linecap="round"
+								>
+									<animateTransform
+										attributeName="transform"
+										type="rotate"
+										dur="1s"
+										repeatCount="indefinite"
+										keyTimes="0;1"
+										values="0 50 50;-360 50 50"
+									></animateTransform>
+								</circle>
+							</svg>
 						</div>
 					</div>
-					<div class="weather__week"></div>
-					<div class="preload">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							xmlns:xlink="http://www.w3.org/1999/xlink"
-							style="margin: auto; background: none; display: block; shape-rendering: auto"
-							width="200px"
-							height="200px"
-							viewBox="0 0 100 100"
-							preserveAspectRatio="xMidYMid"
-						>
-							<circle
-								cx="50"
-								cy="50"
-								r="32"
-								stroke-width="8"
-								stroke="#1d3f72"
-								stroke-dasharray="50.26548245743669 50.26548245743669"
-								fill="none"
-								stroke-linecap="round"
-							>
-								<animateTransform
-									attributeName="transform"
-									type="rotate"
-									dur="1s"
-									repeatCount="indefinite"
-									keyTimes="0;1"
-									values="0 50 50;360 50 50"
-								></animateTransform>
-							</circle>
-							<circle
-								cx="50"
-								cy="50"
-								r="23"
-								stroke-width="8"
-								stroke="#5699d2"
-								stroke-dasharray="36.12831551628262 36.12831551628262"
-								stroke-dashoffset="36.12831551628262"
-								fill="none"
-								stroke-linecap="round"
-							>
-								<animateTransform
-									attributeName="transform"
-									type="rotate"
-									dur="1s"
-									repeatCount="indefinite"
-									keyTimes="0;1"
-									values="0 50 50;-360 50 50"
-								></animateTransform>
-							</circle>
-						</svg>
-					</div>
-				</div>
-			</a>
+				</a>
+			</div>
 		</main>
 		<script src="./index.js"></script>
 	</body>
